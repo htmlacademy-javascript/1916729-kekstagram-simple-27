@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм (простой)»
 
 * Студент: [Роман Марухленко](https://up.htmlacademy.ru/javascript/27/user/1916729).
-* Наставник: .
+* Наставник: [Дмитрий Гуляев](https://htmlacademy.ru/profile/dima).
 
 ---
 
