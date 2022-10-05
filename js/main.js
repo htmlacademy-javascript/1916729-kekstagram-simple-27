@@ -7,8 +7,9 @@ function randomInteger(min, max) {
 console.log('Случайное число ' + randomInteger(0, 100));
 
 
-checkStringLength = function (currentString, minLenght, maxLength) {
+let checkStringLength = function (currentString, minLenght, maxLength) {
   return currentString.length >= minLenght && currentString.length <= maxLength;
 };
-console.log(checkStringLength ('Проверяемая строка больше 20ти символов', 20, 140));
+console.log(checkStringLength('Проверяемая строка больше 20ти символов',
+ 20, 140));
 
