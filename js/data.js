@@ -1,4 +1,4 @@
-import {getRandomArrayElement, getRandomInteger} from './util.js';
+import {getRandomArrayElement, getRandomInteger} from './utils.js';
 
 const SIMILAR_PHOTO_COUNT = 25;
 
@@ -28,8 +28,8 @@ const createPicture = (index) => ({
   comment: getRandomInteger(COMMENTS.MIN_LIKES, COMMENTS.MAX_LIKES),
 });
 
-const getPicture = () =>
+const getPictures = () =>
   Array.from({ length: SIMILAR_PHOTO_COUNT },
     (_, index) => createPicture(index));
 
-export {getPicture};
+export {getPictures};
