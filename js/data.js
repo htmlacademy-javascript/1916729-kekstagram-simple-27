@@ -7,9 +7,9 @@ const LIKES_COUNT = {
   MAX: 200,
 };
 
-const COMMENTS = {
-  MIN_LIKES: 0,
-  MAX_LIKES: 200,
+const COMMENTS_LIKES = {
+  MIN: 0,
+  MAX: 200,
 };
 
 const DESCRIPTION = [
@@ -25,7 +25,7 @@ const createPicture = (index) => ({
   url: `photos/${index + 1}.jpg`,
   descriptions: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(LIKES_COUNT.MIN, LIKES_COUNT.MAX),
-  comment: getRandomInteger(COMMENTS.MIN_LIKES, COMMENTS.MAX_LIKES),
+  comment: getRandomInteger(COMMENTS_LIKES.MIN, COMMENTS_LIKES.MAX),
 });
 
 const getPictures = () =>
