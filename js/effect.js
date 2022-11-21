@@ -58,7 +58,7 @@ let chosenEffect = DEFAULT_EFFECT;
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const updateSlider = () => {
-  sliderElement.classList.remove('.hidden');
+  sliderElement.classList.remove('hidden');
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
@@ -69,7 +69,7 @@ const updateSlider = () => {
   });
 
   if (isDefault()) {
-    sliderElement.classList.add('.hidden');
+    sliderElement.classList.add('hidden');
   }
 };
 
