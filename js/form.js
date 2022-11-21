@@ -1,3 +1,7 @@
+import {isEscapePressed} from './utils.js';
+import {resetEffects} from './effect.js';
+import {resetScale} from './scale.js';
+
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -14,26 +18,21 @@ const pristine = new Pristine(form, {
 const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  document.addEventListener('keydown', onEscKeyDown);
+  document.addEventListener('keydown', isEscapePressed);
 };
 
 const hideModal = () => {
   form.reset();
+  resetScale();
+  resetEffects();
   pristine.reset();
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onEscKeyDown);
+  document.removeEventListener('keydown', isEscapePressed);
 };
 
 const isTextFieldFocused = () =>
   document.activeElement === commentField;
-
-function onEscKeyDown (evt) {
-  if (evt.key === 'Escape' && !isTextFieldFocused()) {
-    evt.preventDefault();
-    hideModal();
-  }
-}
 
 const onCancelButtonClick = () => {
   hideModal();
@@ -61,3 +60,5 @@ const onFormSubmit = (evt) => {
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 form.addEventListener('submit', onFormSubmit);
+
+export {isTextFieldFocused, hideModal};
