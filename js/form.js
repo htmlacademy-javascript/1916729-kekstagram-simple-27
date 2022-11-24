@@ -2,14 +2,15 @@ import {isEscapePressed} from './utils.js';
 import {resetEffects} from './effect.js';
 import {resetScale} from './scale.js';
 import {sendData} from './network.js';
+import {openSuccessPopup, openErrorPopup} from './popup.js';
 
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
+const uploadFileInput = document.querySelector('.img-upload__input');
 const body = document.querySelector('body');
 const cancelButton = document.querySelector('#upload-cancel');
-const fileField = document.querySelector('#upload-file');
-const commentField = document.querySelector('.text__description');
 const submitButton = form.querySelector('#upload-submit');
+const commentField = document.querySelector('.text__description');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__text',
@@ -17,47 +18,38 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__text__error',
 });
 
-const showModal = () => {
-  overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', isEscapePressed);
-};
-
-const hideModal = () => {
-  form.reset();
-  resetScale();
-  resetEffects();
-  pristine.reset();
-  overlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-  document.removeEventListener('keydown', isEscapePressed);
-};
-
 const isTextFieldFocused = () =>
   document.activeElement === commentField;
 
+const onModalEscKeydown = (evt) => {
+  if (isEscapePressed(evt) && !document.querySelector('. error')) {
+    evt.preventDefault();
+    closeModal();
+  }
+};
+
 const onCancelButtonClick = () => {
-  hideModal();
+  closeModal();
 };
 
-// const onFileInputChange = () => {
-//   showModal();
-// };
+const openModal = () => {
+  overlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+  document.addEventListener('keydown', onModalEscKeydown);
+  cancelButton.addEventListener('click', onCancelButtonClick);
+};
 
-function validateDescription (value) {
-  return value.length >= 20 && value.length <= 140;
+function closeModal() {
+  overlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onModalEscKeydown);
+  cancelButton.removeEventListener('click', onCancelButtonClick);
+  uploadFileInput.value = '';
+  resetScale();
+  resetEffects();
+  pristine.reset();
+  form.reset();
 }
-
-pristine.addValidator(
-  commentField,
-  validateDescription,
-  'От 20 до 140 символов'
-);
-
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-};
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -67,22 +59,27 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
 };
 
-function initForm (onSuccess, onFail) {
-  fileField.addEventListener('change', () => {
-    showModal();
+const onSuccess = () => {
+  openSuccessPopup();
+  closeModal();
+};
+
+const onError = () => {
+  openErrorPopup();
+};
+
+const initForm = () => {
+  uploadFileInput.addEventListener('change', () => {
+    openModal();
   });
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    if (Comment > Comment.MAX) {
-      blockSubmitButton();
-      sendData(onSuccess, onFail, new FormData(evt.target))
-        .then(() => hideModal())
-        .then(() => unblockSubmitButton());
-    }
+    blockSubmitButton();
+    sendData(onSuccess, onError, new FormData(evt.target))
+      .then(() => {
+        unblockSubmitButton();
+      });
   });
-}
-// fileField.addEventListener('change', onFileInputChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
+};
 
-export {isTextFieldFocused, hideModal, initForm};
+export {initForm, closeModal, isTextFieldFocused};

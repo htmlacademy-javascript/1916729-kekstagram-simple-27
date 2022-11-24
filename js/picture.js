@@ -1,6 +1,7 @@
 const pictureTemplate = document
   .querySelector('#picture')
   .content.querySelector('.picture');
+
 const container = document.querySelector('.pictures');
 
 const createPicture = (data) => {
