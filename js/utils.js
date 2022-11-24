@@ -1,6 +1,5 @@
 import {isTextFieldFocused, closeModal} from './form.js';
 
-// https://learn.javascript.ru/task/random-int-min-max
 const getRandomInteger = function (min, max) {
   if (min >= max) {
     return NaN;
